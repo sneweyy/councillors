@@ -1,0 +1,42 @@
+#This is the code for the tables 
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(scales)
+install.packages('rvest')
+library(rvest)
+read_url <- "http://democracy.bexley.gov.uk/mgMemberIndex.aspx?FN=ALPHA&VW=LIST&PIC=0"
+new <- read_url %>%
+  read_html() %>%
+  html_nodes(xpath='/html/body/div[1]/div/div/section/div/div/div/div[2]/div[3]/div') %>%
+  h
+new <- new[[1]]
+
+View(new)
+
+
+
+#This is the code for the non table annoying websites
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(scales)
+install.packages('rvest')
+library(rvest)
+
+url <- 'http://democracy.bexley.gov.uk/mgMemberIndex.aspx?bcr=1'
+councillor <- url %>%
+  read_html() %>%
+  html_node(xpath = '/html/body/div[1]/div/div/section/div/div/div/div[2]/div[3]/div/ul') %>%
+  html_nodes('li a') %>% 
+  html_text()
+
+table <- data.frame(matrix(unlist(councillor), nrow=62, byrow=T))
+
+other <- url %>%
+  read_html() %>%
+  html_node(xpath = '/html/body/div[1]/div/div/section/div/div/div/div[2]/div[3]/div/ul') %>%
+  html_nodes('p:nth-of-type(2)') %>% 
+  html_text()
+
+newtable <- data.frame(matrix(unlist(other), nrow=62, byrow=T))
