@@ -1,22 +1,29 @@
-#This is the code for the tables 
+#These are the packages you need
 library(readr)
 library(dplyr)
 library(ggplot2)
 library(scales)
 install.packages('rvest')
 library(rvest)
-read_url <- "http://democracy.bexley.gov.uk/mgMemberIndex.aspx?FN=ALPHA&VW=LIST&PIC=0"
+
+#This is the template for scraping tables. I repeated this for the different council websites with tables on 
+#I did this individually as I needed to have the photos of the councillors there to check manually if they were male or female
+#Couln't do this with a programme easily as so many gender neutral names, or names I didn't immeditately recognise 
+#Therefore easier to scrape each website, then identify if councillors were m/f, then move on to next website
+
+read_url <- "http://democracy.brent.gov.uk/mgMemberIndex.aspx?FN=WARD&VW=TABLE&PIC=1"
 new <- read_url %>%
   read_html() %>%
-  html_nodes(xpath='/html/body/div[1]/div/div/section/div/div/div/div[2]/div[3]/div') %>%
-  h
+  html_nodes(xpath='///*[@id="mgTable1"]') %>%
+  html_table()
 new <- new[[1]]
 
 View(new)
 
+write.csv(new, "Brent")
 
 
-#This is the code for the non table annoying websites
+#This is the code for the non table annoying websites!!
 library(readr)
 library(dplyr)
 library(ggplot2)
@@ -24,6 +31,7 @@ library(scales)
 install.packages('rvest')
 library(rvest)
 
+#Bexley Council
 url <- 'http://democracy.bexley.gov.uk/mgMemberIndex.aspx?bcr=1'
 councillor <- url %>%
   read_html() %>%
@@ -40,3 +48,51 @@ other <- url %>%
   html_text()
 
 newtable <- data.frame(matrix(unlist(other), nrow=62, byrow=T))
+newtable$new_column <- table
+
+write.csv(newtable, "Bexley")
+
+#Tower Hamlets
+
+url <- 'https://democracy.towerhamlets.gov.uk/mgMemberIndex.aspx?bcr=1'
+th <- url %>%
+  read_html() %>%
+  html_node(xpath = '/html/body/div[1]/div/div[3]/div/div[2]/div[2]/div[1]/div/div[3]/div[2]/ul') %>%
+  html_nodes("li a") %>%
+  html_text() %>%
+  View()
+
+th <- data.frame(matrix(unlist(councillor), nrow=47, byrow=T)) 
+
+tho <- read_html('https://democracy.towerhamlets.gov.uk/mgMemberIndex.aspx?bcr=1') %>%
+  html_nodes("p:nth-of-type(2)") %>%
+  html_text() %>%
+  View()
+
+tho <- data.frame(matrix(unlist(councillor), nrow=47, byrow=T))
+
+tho$new_column <- th
+
+write.csv(tho, "Tower Hamlets")
+
+
+#Lewisham
+
+lewisham <- read_html('http://councilmeetings.lewisham.gov.uk/mgMemberIndex.aspx?VW=TABLE&PIC=1&FN=ALPHA') %>%
+  html_nodes("table.mgStatsTable:nth-of-type(2) p:nth-of-type(1) a") %>%
+  html_text() %>%
+  View()
+
+lewishamtable <- data.frame(matrix(unlist(lewisham), nrow=54, byrow=T)) 
+  View()
+
+partytable <- read_html('http://councilmeetings.lewisham.gov.uk/mgMemberIndex.aspx?VW=TABLE&PIC=1&FN=ALPHA') %>%
+  html_nodes("table.mgStatsTable:nth-of-type(2) td:nth-of-type(3)") %>%
+  html_text() %>%
+  View()
+
+party <- data.frame(matrix(unlist(party), nrow=54, byrow=T)) 
+  View()   
+
+lewishamtable$new_column <- partytable 
+write.csv(lewishamtable, "Lewisham")
