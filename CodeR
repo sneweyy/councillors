@@ -96,3 +96,23 @@ party <- data.frame(matrix(unlist(party), nrow=54, byrow=T))
 
 lewishamtable$new_column <- partytable 
 write.csv(lewishamtable, "Lewisham")
+
+#Newham
+
+newham <- read_html('https://mgov.newham.gov.uk/mgMemberIndex.aspx?bcr=1') %>%
+  html_nodes("div.mgThumbsList a") %>%
+  html_text() %>%
+  View()
+
+newhamtable <- data.frame(matrix(unlist(newham), nrow=60, byrow=T)) 
+
+
+party <- read_html('https://mgov.newham.gov.uk/mgMemberIndex.aspx?bcr=1') %>%
+  html_nodes("div.mgThumbsList p:nth-of-type(2)") %>%
+  html_text() %>%
+  View()
+
+partytable <- data.frame(matrix(unlist(party), nrow=60, byrow=T)) 
+  
+newhamtable$new_column <- partytable 
+write.csv(lewishamtable, "Lewisham")
