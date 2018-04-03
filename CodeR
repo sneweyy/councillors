@@ -188,3 +188,92 @@ p <- ggplot(data, aes(x = PARTY, y = value, fill = variable)) +
 
 p+scale_fill_manual(values=c("M"="#770515", "F"="#E97979"), name = "Gender")
 
+
+
+
+#This is my highcharts code
+
+Highcharts.chart('container', {
+    chart: {
+        type: 'column'
+        
+    },
+    title: {
+        text: 'Female Councillors in London Borough Councils'
+    },
+    subtitle: {
+        
+    },
+    xAxis: {
+        type: 'category',
+        labels: {
+            rotation: -45,
+            style: {
+                fontSize: '13px',
+                fontFamily: 'Verdana, sans-serif'
+            }
+        }
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: 'Percent'
+        }
+    },
+    legend: {
+        enabled: false
+    },
+    tooltip: {
+        pointFormat: 'Female Councillors: <b>{point.y:.1f}%</b>'
+    },
+    series: [{
+        name: 'Population',
+        data: [
+            ["Lewisham",74.1],
+    				["Tower Hamlets", 60.0],
+    				["Lambeth", 47.6], 
+    				["Southwark", 44.4],
+    				["Hackney", 43.9],
+    				["Haringey",43.9],
+    				["Islington",43.8],
+   					["Camden", 42.6],
+    				["Barking and Dagenham", 42.0],
+    				["Brent", 41.9],
+   					["Wandsworth", 41.7],
+  				  ["Richmond upon Thames", 41.5],
+   				  ["Enfield", 41],
+    				["Kensington and Chelsea", 40.0],
+    				["Merton",40.0], 
+    				["Newham",40.0], 
+    				["Barnet",39.7],
+    				["Harrow",39.7],
+    				["Sutton",39.6],
+    				["Hammersmith and Fulham", 39.1],
+    				["City of Westminster",38.3],
+    				["Greenwich",37.3],
+    				["Croyden",36.8],
+    				["Bromley",36.7],
+    				["Waltham",36.7],
+    				["Kingston upon Thames",35.4],
+    				["Hounslow",35.1],
+   				 	["Ealing",34.8],
+    				["Bexley",33.9],
+    				["Hillingdon",30.2],
+    				["Redbridge",27.0],
+    				["Havering",24.5],
+        ],
+        dataLabels: {
+            enabled: false,
+            rotation: -90,
+            colors: '#12065f',
+            align: 'right',
+            format: '{point.y:.1f}', // one decimal
+            y: 10, // 10 pixels down from the top
+            style: {
+                fontSize: '13px',
+                fontFamily: 'Verdana, sans-serif'
+            }
+        }
+    }]
+});
+
