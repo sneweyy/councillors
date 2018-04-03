@@ -163,3 +163,28 @@ p <- ggplot(data, aes(x = PARTY, y = value, fill = variable)) +
 
 p+scale_fill_manual(values=c("M"="#09115F", "F"="#79B8F7"))
 
+#Labour
+
+#this shows the number of conservative male/female councillors  
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(reshape2)
+library(ggthemes)
+
+data <- read_csv("/Users/sarahnewey/Documents/City/Data J/CODING/Make up of local councils/labour.csv")
+data %>% View()
+
+data <- melt(data, id.vars = 'PARTY')
+
+
+p <- ggplot(data, aes(x = PARTY, y = value, fill = variable)) +
+  geom_bar(stat = 'identity', weight =.3, position='dodge') +
+  theme_economist() +
+  labs(title="Labour Party",
+       subtitle="April 2018") +
+  xlab("") +
+  ylab("Number of Councillors") 
+
+p+scale_fill_manual(values=c("M"="#770515", "F"="#E97979"), name = "Gender")
+
