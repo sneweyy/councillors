@@ -138,4 +138,28 @@ ggplot(data, aes(x = Council, y = Women, fill = Party)) +
        caption="source: Sarah Newey") + 
   theme(axis.text.x = element_text(angle=90, vjust=0.6)) +
   scale_fill_manual("legend", values = c("#0087dc", "#d50000","#FDBB30", "#4d4d4d" ))
+  
+  
+#this shows the number of conservative male/female councillors  
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(reshape2)
+library(ggthemes)
+
+data <- read_csv("/Users/sarahnewey/Documents/City/Data J/CODING/Make up of local councils/conservative.csv")
+data %>% View()
+
+data <- melt(data, id.vars = 'PARTY')
+
+
+p <- ggplot(data, aes(x = PARTY, y = value, fill = variable)) +
+  geom_bar(stat = 'identity', weight =.3, position='dodge') +
+  theme_economist() +
+  labs(title="Conservative Party",
+       subtitle="April 2018") +
+  xlab("") +
+  ylab("Number of Councillors") 
+
+p+scale_fill_manual(values=c("M"="#09115F", "F"="#79B8F7"))
 
